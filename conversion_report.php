@@ -6,7 +6,7 @@ class conversion_report{
   public function __construct(){
     $this->db_host = "localhost";
     $this->db_user = "root";
-    $this->db_password = "nekoten1";
+    $this->db_password = "";
     $this->db_name = "conversion";
     // $this->conn = mysqli_connect($this->db_host,$this->db_user,$this->db_password,$this->db_name);
   }

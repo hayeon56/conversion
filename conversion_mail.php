@@ -1,11 +1,42 @@
 <?php
 
+$conversion_mail = new conversion_mail();
+$content = $conversion_mail->send_mail();
+echo $content."<br>";
+
+require "./PHPMailer-5.2.27/PHPMailerAutoload.php";
+$mail = new PHPMailer(true);
+$mail->IsSMTP();
+
+$mail->SMTPDebug  = 2;
+
+$mail->Host = "smtp.naver.com";
+
+$mail->SMTPAuth = true;
+$mail->Port = 465;
+$mail->SMTPSecure = "ssl";
+$mail->Username = "yeoneeeeeee@naver.com";
+$mail->Password = "";
+$mail->SetFrom('yeoneeeeeee@naver.com', '');
+$mail->AddAddress('h-lee@estore.co.jp', 'YOU');
+// $mail->AddAddress('takai@estore.co.jp', 'YOU');
+// $mail->AddAddress('y-ito@estore.co.jp', 'YOU');
+// $mail->AddAddress('f-maeda@estore.co.jp', 'YOU');
+// $mail->AddAddress('yagi@estore.co.jp', 'YOU');
+// $mail->AddAddress('kumamimi@estore.co.jp', 'YOU');
+// $mail->AddAddress('m-park@estore.co.jp', 'YOU');
+// $mail->AddAddress('mi-kim@estore.co.jp', 'YOU');
+$mail->Subject = 'CVR Report';
+$mail->MsgHTML($content);
+$mail->Send();
+
+
 class conversion_mail{
 
   public function __construct(){
     $this->db_host = "localhost";
     $this->db_user = "root";
-    $this->db_password = "nekoten1";
+    $this->db_password = "";
     $this->db_name = "conversion";
     // $this->conn = mysqli_connect($this->db_host,$this->db_user,$this->db_password,$this->db_name);
   }
@@ -33,6 +64,7 @@ class conversion_mail{
       if($result = $conn->query($query)){
         while($row = $result->fetch_assoc()){
           $content = '<body>
+                      <p>「音楽やさん」アクセスレポート</p>
                       <table border="1">
                         <tr>
                           <th>日付</th>
@@ -60,36 +92,12 @@ class conversion_mail{
         $result->close();
       }
 
-      echo $content;
-      //
-      // $mailto = "h-lee@estore.co.jp,
-      // takai@estore.co.jp,
-      // y-ito@estore.co.jp,
-      // f-maeda@estore.co.jp,
-      // yagi@estore.co.jp,
-      // kumamimi@estore.co.jp,
-      // m-park@estore.co.jp,
-      // mi-kim@estore.co.jp";
+      return $content;
 
-      $mailto = "h-lee@estore.co.jp";
-      $mailFrom = "yeoneeeeeee@naver.com";
-      $subject = "「音楽やさん」アクセスレポート";
-      $additional_headers = "Content-Type:text/html;";
-      $result = mail($mailto, $subject, $content,$additional_headers);
-
-      if($result){
-        echo "mail success";
-      }
-      else{
-        error_log($result,0);
-        echo $result;
-        echo "mail fail";
-      }
     }
 }
 
-$conversion_mail = new conversion_mail();
-$conversion_mail->send_mail();
+
 
 
 
